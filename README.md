@@ -1,4 +1,14 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vision Plate
+
+> Vision Plate is a next-gen, AI-powered calorie tracker that makes logging meals effortless. Simply snap a photo, and our advanced vision AI instantly identifies the food and breaks down your macros. Track your progress, maintain daily habit streaks, and hit your fitness goals within a beautifully sleek, dark-mode dashboard.
+
+## Features
+
+- 📸 **AI Food Scanning:** Snap a photo of your meal and let Claude 3.5 Sonnet instantly break down the calories, protein, carbs, and fat.
+- 🔥 **Streak & Habit Tracking:** Stay motivated with an interactive 21-day dot calendar and gamified daily streaks.
+- 📊 **Advanced Analytics:** Visualize your weekly progress and daily macro distribution through beautiful, custom-built SVG rings and charts.
+- 🌙 **Premium Aesthetic:** Designed with a sleek, dark-mode-first interface accented by an electric amber theme (`#F5A623`).
+- 📱 **Fully Responsive:** Beautifully adapts from a mobile-friendly bottom tab bar to a dashboard-style desktop sidebar.
 
 ## Getting Started
 
@@ -16,21 +26,19 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Setup (Crucial)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To use the AI scanning feature, you must provide an Anthropic API Key. 
 
-## Learn More
+1. Create a `.env.local` file in the root of the project.
+2. Add your key: `ANTHROPIC_API_KEY=your_key_here`
 
-To learn more about Next.js, take a look at the following resources:
+If no key is provided, the API route will gracefully return mock data so you can still test the UI flow.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech Stack
+- Next.js 14 (App Router)
+- React
+- Tailwind CSS v4
+- Anthropic Claude API (`@anthropic-ai/sdk`)
+- Recharts
+- Lucide Icons
