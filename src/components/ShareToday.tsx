@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import html2canvas from "html2canvas";
+import { toBlob } from "html-to-image";
 import { Share, Download, Check } from "lucide-react";
 import { useStore } from "@/store/useStore";
 
@@ -20,38 +20,37 @@ export function ShareToday({ elementId }: { elementId: string }) {
       // Temporarily adjust styling for canvas capture if needed
       el.classList.add("exporting");
       
-      const canvas = await html2canvas(el, {
+      const blob = await toBlob(el, {
         backgroundColor: "#0D0D0D",
-        scale: 2, // High quality
-        logging: false,
-        useCORS: true,
+        pixelRatio: 2,
+        style: {
+          margin: "0",
+        }
       });
       
       el.classList.remove("exporting");
       
-      canvas.toBlob(async (blob) => {
-        if (!blob) throw new Error("Canvas to Blob failed");
-        
-        const file = new File([blob], `vision-plate-summary.png`, { type: "image/png" });
-        
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            title: "My Vision Plate Summary",
-            text: `I tracked ${dailyEntries.reduce((a, b) => a + b.kcal, 0)} kcal today on Vision Plate!`,
-            files: [file]
-          });
-        } else {
-          // Fallback to download
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `vision-plate-${new Date().toISOString().split('T')[0]}.png`;
-          a.click();
-          URL.revokeObjectURL(url);
-        }
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 2000);
-      });
+      if (!blob) throw new Error("Canvas to Blob failed");
+      
+      const file = new File([blob], `vision-plate-summary.png`, { type: "image/png" });
+      
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: "My Vision Plate Summary",
+          text: `I tracked ${dailyEntries.reduce((a, b) => a + b.kcal, 0)} kcal today on Vision Plate!`,
+          files: [file]
+        });
+      } else {
+        // Fallback to download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `vision-plate-${new Date().toISOString().split('T')[0]}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
     } catch (e) {
       console.error("Share failed", e);
     }
