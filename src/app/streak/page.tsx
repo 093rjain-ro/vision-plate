@@ -1,9 +1,14 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 import { Card } from "@/components/ui/Card";
-import { Flame, Award } from "lucide-react";
+import { Flame, Award, Lock } from "lucide-react";
 
 export default function StreakPage() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   // Generate 21 days data (last 21 days ending today)
   const dots = Array.from({ length: 21 }).map((_, i) => {
     if (i < 15) return "completed";
@@ -12,6 +17,19 @@ export default function StreakPage() {
     if (i === 20) return "today";
     return "future";
   });
+
+  const achievements = [
+    { key: "Protein King", desc: "Hit protein goal 7 days in a row", progress: 4, total: 7, unlocked: false },
+    { key: "Hydration Hero", desc: "Hit water goal 5 days", progress: 5, total: 5, unlocked: true },
+    { key: "Scanner Pro", desc: "Scan 50 meals via camera", progress: 12, total: 50, unlocked: false },
+    { key: "Perfect Day", desc: "Hit calorie goal within ±50 kcal", progress: 1, total: 1, unlocked: true },
+    { key: "Month Warrior", desc: "30-day streak", progress: 14, total: 30, unlocked: false },
+    { key: "Early Bird", desc: "Log breakfast before 9am for 7 days", progress: 2, total: 7, unlocked: false },
+    { key: "Deficit Destroyer", desc: "Maintain calorie deficit for 14 days", progress: 14, total: 14, unlocked: true },
+    { key: "Macro Master", desc: "Hit all 3 macro goals in one day, 5 times", progress: 3, total: 5, unlocked: false },
+  ];
+
+  if (!mounted) return null;
 
   return (
     <div className="min-h-full p-6 pb-24">
@@ -78,19 +96,29 @@ export default function StreakPage() {
         </div>
       </div>
 
-      {/* Achievement Card */}
+      {/* Expansion: 8 New Achievements */}
       <h2 className="text-lg font-semibold text-white mb-4">Achievements</h2>
-      <Card className="bg-[#1A1A00] border-[#3A2A00] flex items-center p-4 gap-4">
-        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-[0_0_12px_rgba(245,166,35,0.4)]">
-          <Award size={20} className="text-black fill-black" />
-        </div>
-        <div className="flex flex-col">
-          <span className="text-primary text-sm font-bold mb-0.5">2-Week Warrior</span>
-          <span className="text-[#888] text-[11px] font-medium leading-snug">
-            Logged every day for 14 days. Amazing consistency!
-          </span>
-        </div>
-      </Card>
+      <div className="space-y-3">
+        {achievements.map((ach) => (
+          <Card key={ach.key} className={`border flex items-center p-4 gap-4 ${ach.unlocked ? "bg-[#1A1A00] border-[#3A2A00]" : "bg-card border-border opacity-60 grayscale-[50%]"}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${ach.unlocked ? "bg-primary shadow-[0_0_12px_rgba(245,166,35,0.4)]" : "bg-subtle"}`}>
+              {ach.unlocked ? <Award size={20} className="text-black fill-black" /> : <Lock size={16} className="text-muted" />}
+            </div>
+            <div className="flex flex-col flex-1">
+              <span className={`text-sm font-bold mb-0.5 ${ach.unlocked ? "text-primary" : "text-white"}`}>{ach.key}</span>
+              <span className="text-[#888] text-[11px] font-medium leading-snug">
+                {ach.desc}
+              </span>
+              <div className="flex items-center gap-2 mt-2">
+                <div className="flex-1 h-1 bg-subtle rounded-full overflow-hidden">
+                  <div className="h-full bg-primary" style={{ width: `${Math.min((ach.progress / ach.total) * 100, 100)}%` }}></div>
+                </div>
+                <span className="text-[9px] text-muted font-bold">{ach.progress}/{ach.total}</span>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
