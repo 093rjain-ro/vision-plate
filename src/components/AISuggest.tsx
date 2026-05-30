@@ -32,9 +32,10 @@ export function AISuggest() {
     setLoading(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAdd = (s: any) => {
     const entry: DiaryEntry = {
-      id: Math.random().toString(36).substring(7),
+      id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
       food_name: s.name,
       meal_type: "Snacks",
       kcal: s.kcal,

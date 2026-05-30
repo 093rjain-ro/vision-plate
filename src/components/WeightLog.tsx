@@ -12,27 +12,28 @@ export function WeightLog() {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [logs, setLogs] = useState<{ logged_date: string; weight_kg: number }[]>([]);
 
-  useEffect(() => {
-    fetchLogs();
-  }, []);
-
   const fetchLogs = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      
-      const { data } = await supabase
-        .from("weight_logs")
-        .select("logged_date, weight_kg")
-        .eq("user_id", user.id)
-        .order("logged_date", { ascending: true })
-        .limit(30);
-      
-      if (data) setLogs(data);
+      if (user) {
+        const { data, error } = await supabase
+          .from("weight_logs")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("date", { ascending: true });
+          
+        if (!error && data) {
+          setLogs(data);
+        }
+      }
     } catch (e) {
-      console.warn("Failed to fetch weight logs");
+      console.error(e);
     }
   };
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
 
   const handleSave = async () => {
     if (!weight) return;

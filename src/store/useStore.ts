@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Profile, DiaryEntry, WaterLog, UserPreferences } from "../types";
+import type { Profile, DiaryEntry, UserPreferences } from "../types";
 
 interface AppState {
   // User Data
@@ -12,6 +12,7 @@ interface AppState {
   waterTotalMl: number;
   
   // Temporary State
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   currentScanResult: any | null;
   
   // Actions
@@ -22,6 +23,7 @@ interface AppState {
   setDailyEntries: (entries: DiaryEntry[]) => void;
   addWater: (amount_ml: number) => void;
   setWaterTotal: (total: number) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setCurrentScanResult: (result: any) => void;
   
   // Calculated state getters

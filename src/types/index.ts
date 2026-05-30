@@ -25,6 +25,7 @@ export interface DiaryEntry {
   fiber: number;
   sugar: number;
   sodium: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   vitamins: Record<string, any>;
   serving_g: number;
   logged_at?: string;
@@ -57,6 +58,7 @@ export interface FoodItem {
   fiber: number;
   sugar: number;
   sodium: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   vitamins?: Record<string, any>;
   source: "USDA" | "OFF" | "manual" | "claude";
   barcode?: string;
