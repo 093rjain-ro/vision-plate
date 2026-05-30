@@ -100,10 +100,6 @@ export default function ScanPage() {
 
   if (!mounted) return null;
 
-  if (activeTab === "barcode") {
-    return <BarcodeScanner onCancel={() => setActiveTab("camera")} />;
-  }
-
   return (
     <div className="relative min-h-full h-[100dvh] bg-[#0D0D0D] flex flex-col pt-safe">
       
@@ -113,6 +109,8 @@ export default function ScanPage() {
         <button onClick={() => setActiveTab("barcode")} className={`px-4 py-1.5 rounded-full text-sm font-bold transition-colors ${activeTab === "barcode" ? "bg-primary text-black" : "text-muted hover:text-white"}`}>Barcode</button>
         <button onClick={() => setActiveTab("search")} className={`px-4 py-1.5 rounded-full text-sm font-bold transition-colors ${activeTab === "search" ? "bg-primary text-black" : "text-muted hover:text-white"}`}>Search</button>
       </div>
+
+      {activeTab === "barcode" && <BarcodeScanner onCancel={() => setActiveTab("camera")} />}
 
       {activeTab === "camera" && (
         <div className="flex-1 relative flex flex-col p-4 md:p-8 pt-0">
